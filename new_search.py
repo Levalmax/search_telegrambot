@@ -2,6 +2,9 @@ import os
 import telebot
 from config import BOT_TOKEN, dirOfSearch
 
+print('Программа запущена - - -')
+
+
 catalog = dirOfSearch
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -15,8 +18,11 @@ def start_message(message):
 
 
 @bot.message_handler(content_types=["text"])
+
+
 def handle_text(message):
     searchNumber = message.text
+    print('> - Запрос файл: ',searchNumber)
     i = 0
     j = 0
     dictionary = {}
@@ -35,10 +41,12 @@ def handle_text(message):
         zNumber = number.split('_')
         if zNumber[1] == searchNumber:
             docm = newDictionary[number]
+            print('V - Запрошенный файл найден: ', docm)
             bot.send_document(message.chat.id, open(docm, 'rb'))
             j += 1
     if j == 0:
         bot.send_message(message.chat.id, 'Файл с таким заводским номером не найден 😔')
+        print ('Х - запрошенный файл не найден')
 
 bot.polling(none_stop=True, interval=0)
 
